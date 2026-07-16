@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bobathon — IBM Bob 고객 초청 해커톤</title>
+<meta name="description" content="IBM Bob 고객 초청 해커톤 Bobathon. 개발 실무자를 위한 두 시간짜리 핸즈온 세션. 아젠다, 일정, 등록 안내.">
+<link rel="icon" href="assets/ibmbob.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Sans+KR:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+  /* ---------- Reset ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body, h1, h2, h3, p, dl, dd, table { margin: 0; padding: 0; }
+  img, svg { display: block; max-width: 100%; }
+  table { border-collapse: collapse; }
+  button { font: inherit; color: inherit; }
+
+  /* ---------- Carbon tokens — see DESIGN.md ---------- */
+  :root {
+    --primary: #0f62fe;
+    --on-primary: #ffffff;
+    --blue-60: #0043ce;
+    --ink: #161616;
+    --ink-muted: #525252;
+    --ink-subtle: #8c8c8c;
+    --canvas: #ffffff;
+    --surface-1: #f4f4f4;
+    --surface-2: #e0e0e0;
+    --hairline: #e0e0e0;
+    --hairline-strong: #161616;
+    --inverse-canvas: #161616;
+    --inverse-surface-1: #262626;
+    --inverse-ink: #ffffff;
+    --inverse-ink-muted: #c6c6c6;
+
+    --plex: "IBM Plex Sans", "IBM Plex Sans KR", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  /* Carbon Gray-100 — the documented dark palette, not an inversion */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --primary: #4589ff;
+      --blue-60: #78a9ff;
+      --ink: #f4f4f4;
+      --ink-muted: #c6c6c6;
+      --ink-subtle: #8d8d8d;
+      --canvas: #161616;
+      --surface-1: #262626;
+      --surface-2: #393939;
+      --hairline: #393939;
+      --hairline-strong: #f4f4f4;
+      --inverse-canvas: #262626;
+      --inverse-surface-1: #393939;
+      --inverse-ink: #f4f4f4;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --primary: #4589ff;
+    --blue-60: #78a9ff;
+    --ink: #f4f4f4;
+    --ink-muted: #c6c6c6;
+    --ink-subtle: #8d8d8d;
+    --canvas: #161616;
+    --surface-1: #262626;
+    --surface-2: #393939;
+    --hairline: #393939;
+    --hairline-strong: #f4f4f4;
+    --inverse-canvas: #262626;
+    --inverse-surface-1: #393939;
+    --inverse-ink: #f4f4f4;
+  }
+
+  /* ---------- Base ---------- */
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--plex);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .band { background: var(--canvas); border-bottom: 1px solid var(--hairline); }
+  .band.alt { background: var(--surface-1); }
+  .inner { max-width: 1120px; margin: 0 auto; padding: 64px 32px; }
+
+  :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+  /* ---------- Top nav ---------- */
+  .topnav {
+    background: var(--canvas);
+    border-bottom: 1px solid var(--hairline);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topnav .inner {
+    padding: 0 32px; height: 48px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .ibm-mark { height: 20px; width: auto; color: var(--ink); flex: none; }
+  .topnav .sep { width: 1px; height: 24px; background: var(--hairline); flex: none; }
+  .topnav .product { font-size: 14px; line-height: 1.29; letter-spacing: 0.16px; color: var(--ink); }
+  .topnav .product span { color: var(--ink-subtle); }
+  .theme-toggle {
+    margin-left: auto; background: transparent; color: var(--primary);
+    border: 0; border-radius: 0; padding: 12px 16px;
+    font-size: 14px; letter-spacing: 0.16px; cursor: pointer;
+  }
+  .theme-toggle:hover { background: var(--surface-1); }
+
+  /* ---------- Type ---------- */
+  .eyebrow { font-size: 14px; line-height: 1.29; letter-spacing: 0.16px; color: var(--primary); margin-bottom: 24px; }
+  h1 { font-size: clamp(42px, 7vw, 76px); font-weight: 300; line-height: 1.17; letter-spacing: -0.5px; text-wrap: balance; }
+  h2 { font-size: clamp(32px, 4.2vw, 42px); font-weight: 300; line-height: 1.2; text-wrap: balance; }
+  .lead { font-size: 18px; line-height: 1.5; letter-spacing: 0; color: var(--ink-muted); max-width: 60ch; }
+  strong { font-weight: 600; }
+  .stack { display: flex; flex-direction: column; gap: 32px; }
+
+  /* ---------- Hero ---------- */
+  .hero .inner { padding: 80px 32px 64px; display: flex; flex-direction: column; gap: 48px; }
+  .hero-grid {
+    display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    gap: 48px; align-items: center;
+  }
+  .hero-copy { display: flex; flex-direction: column; gap: 24px; }
+  .hero-copy .eyebrow { margin-bottom: 0; }
+
+  .bob-plate {
+    background: var(--surface-1); border: 1px solid var(--hairline);
+    padding: 32px 24px 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+  }
+  .bob-plate img { width: 100%; max-width: 176px; height: auto; }
+  .bob-plate figcaption {
+    font-size: 12px; line-height: 1.33; letter-spacing: 0.32px;
+    color: var(--ink-subtle); text-align: center;
+    border-top: 1px solid var(--surface-2); padding-top: 16px; width: 100%;
+  }
+
+  .hero-facts { display: flex; flex-wrap: wrap; border-top: 1px solid var(--hairline); }
+  .fact { flex: 1 1 160px; border-right: 1px solid var(--hairline); padding: 24px 24px 24px 0; }
+  .fact:last-child { border-right: 0; }
+  .fact .k { font-size: 12px; line-height: 1.33; letter-spacing: 0.32px; color: var(--ink-subtle); margin-bottom: 8px; }
+  .fact .v { font-size: 24px; line-height: 1.33; letter-spacing: 0; }
+  .fact .v.num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- Button ---------- */
+  .cta-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 40px; justify-content: space-between;
+    min-width: 200px;
+    background: var(--primary); color: var(--on-primary);
+    border: 1px solid var(--primary); border-radius: 0;
+    padding: 14px 16px; font-size: 16px; letter-spacing: 0.16px;
+    text-decoration: none; cursor: pointer; transition: background 0.11s;
+  }
+  .btn:hover { background: var(--blue-60); border-color: var(--blue-60); }
+  .btn .arrow { font-size: 18px; line-height: 1; }
+  .btn-note { font-size: 12px; letter-spacing: 0.32px; color: var(--ink-subtle); }
+
+  /* ---------- Agenda ---------- */
+  .scroller { overflow-x: auto; }
+  .agenda { width: 100%; }
+  .agenda th {
+    text-align: left; font-size: 12px; font-weight: 400; line-height: 1.33;
+    letter-spacing: 0.32px; color: var(--ink-subtle);
+    padding: 0 16px 12px 0; border-bottom: 1px solid var(--hairline-strong); white-space: nowrap;
+  }
+  .agenda td {
+    padding: 16px 16px 16px 0; border-bottom: 1px solid var(--surface-2);
+    vertical-align: top; font-size: 15px; line-height: 1.5; letter-spacing: 0.16px;
+  }
+  .agenda .clock { font-variant-numeric: tabular-nums; color: var(--primary); white-space: nowrap; width: 96px; }
+  .agenda .dur { font-variant-numeric: tabular-nums; color: var(--ink-subtle); white-space: nowrap; width: 56px; }
+  .agenda .phase { font-weight: 600; white-space: nowrap; width: 200px; }
+  .agenda .phase small {
+    display: block; font-size: 12px; font-weight: 400; letter-spacing: 0.32px;
+    color: var(--ink-subtle); margin-top: 2px;
+  }
+  .agenda .note { color: var(--ink-muted); min-width: 240px; }
+  .agenda tr.rest td { color: var(--ink-subtle); }
+
+  /* ---------- CTA banner ---------- */
+  .cta-banner { background: var(--primary); color: var(--on-primary); }
+  .cta-banner .inner { padding: 48px 32px; display: flex; flex-direction: column; gap: 24px; }
+  .cta-banner h2 { color: var(--on-primary); font-size: 32px; font-weight: 400; line-height: 1.25; }
+  .cta-banner .btn {
+    background: var(--canvas); color: var(--primary); border-color: var(--canvas);
+    align-self: flex-start;
+  }
+  .cta-banner .btn:hover { background: var(--surface-1); border-color: var(--surface-1); }
+
+  /* ---------- Footer ---------- */
+  footer { background: var(--inverse-canvas); color: var(--inverse-ink-muted); border-top: 1px solid var(--inverse-surface-1); }
+  footer .inner { padding: 64px 32px; display: flex; flex-direction: column; gap: 8px; }
+  footer .ibm-mark { height: 26px; color: var(--inverse-ink); margin-bottom: 16px; }
+  footer .mark { color: var(--inverse-ink); font-size: 20px; font-weight: 300; letter-spacing: 0; }
+  footer .meta { font-size: 14px; line-height: 1.29; letter-spacing: 0.16px; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 672px) {
+    .inner, .hero .inner, .cta-banner .inner, footer .inner, .topnav .inner { padding-left: 20px; padding-right: 20px; }
+    .hero .inner { padding-top: 48px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    .bob-plate { order: -1; }
+    .fact { flex-basis: 50%; border-right: 0; }
+    .topnav .inner { gap: 12px; }
+    .theme-toggle { padding: 12px 0; }
+    .topnav .product, .topnav .sep { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="ibm-8bar" viewBox="0 0 1075 401.15">
+    <g fill="currentColor">
+      <rect y="373.17" width="194.43" height="27.932"/><rect y="319.83" width="194.43" height="27.932"/><rect x="55.468" y="266.54" width="83.399" height="27.932"/><rect x="55.468" y="213.25" width="83.399" height="27.932"/><rect x="55.468" y="159.96" width="83.399" height="27.932"/><rect x="55.468" y="106.58" width="83.399" height="27.932"/><rect y="53.288" width="194.43" height="27.932"/><rect width="194.43" height="27.932"/>
+      <path d="m222.17 400.85 207.11 0.297c27.734 0 52.793-10.697 71.513-27.932h-278.62z"/><path d="m222.17 347.76h299.03c5.051-8.617 8.815-18.027 11.094-27.932h-310.12z"/><rect x="277.73" y="266.54" width="83.3" height="27.932"/><path d="m444.43 266.54v27.932h90.927c0-9.608-1.288-19.017-3.764-27.932z"/><path d="m497.92 213.25h-220.19v27.932h243.46c-6.34-10.698-14.165-20.107-23.277-27.932z"/><path d="m277.73 159.96v27.932h220.19c9.311-7.825 17.135-17.235 23.277-27.932z"/><rect x="277.73" y="106.58" width="83.3" height="27.932"/><path d="m444.43 134.51h87.163c2.476-8.914 3.764-18.324 3.764-27.932h-90.927z"/><path d="m521.2 53.288h-299.03v27.932h310.12c-2.575-9.905-6.339-19.314-11.093-27.932z"/><path d="m429.28 0h-207.11v27.932h278.53c-18.621-17.235-43.878-27.932-71.414-27.932z"/>
+      <polygon points="555.57 81.22 742.67 81.22 733.06 53.288 555.57 53.288"/><polygon points="555.57 27.932 724.25 27.932 714.64 0 555.57 0"/><polygon points="861.03 401.17 861.03 373.24 1e3 373.24 1e3 401.17"/><polygon points="861.03 347.76 861.03 319.83 1e3 319.83 1e3 347.76"/><polygon points="777.73 182.54 769.91 159.96 694.43 159.96 611.03 159.96 611.03 187.89 694.43 187.89 694.43 162.24 703.25 187.89 852.22 187.89 861.03 162.24 861.03 187.89 944.43 187.89 944.43 159.96 861.03 159.96 785.56 159.96"/><polygon points="944.43 106.58 803.98 106.58 794.37 134.51 944.43 134.51"/><polygon points="1e3 27.932 1e3 0 840.93 0 831.32 27.932"/><polygon points="768.13 373.22 777.73 400.85 787.34 373.22"/><polygon points="749.5 319.83 759.31 347.76 796.16 347.76 806.06 319.83"/><polygon points="730.78 266.54 740.59 294.47 814.88 294.47 824.68 266.54"/><polygon points="721.97 241.18 833.6 241.18 843.11 213.25 712.36 213.25"/><polygon points="611.03 134.51 761.09 134.51 751.49 106.58 611.03 106.58"/><polygon points="1e3 53.288 822.4 53.288 812.9 81.22 1e3 81.22"/><rect x="555.57" y="373.22" width="138.97" height="27.932"/><rect x="555.57" y="319.83" width="138.97" height="27.932"/><rect x="611.03" y="266.54" width="83.399" height="27.932"/><rect x="611.03" y="213.25" width="83.399" height="27.932"/><rect x="861.03" y="213.25" width="83.399" height="27.932"/><rect x="861.03" y="266.54" width="83.399" height="27.932"/>
+      <path d="m1052 357.15a22 22 0 0 0-22 22 22 22 0 0 0 22 22 22 22 0 0 0 22-22 22 22 0 0 0-22-22zm0 4a18 18 0 0 1 18 18 18 18 0 0 1-18 18 18 18 0 0 1-18-18 18 18 0 0 1 18-18zm-9.3476 6.793v22.414h5.453v-7.7305h3.0978l4.164 7.7305h5.9804l-5.0234-8.582c2.4616-0.96446 4.0624-3.2158 4.0624-6.75 0-4.0818-2.5594-7.082-7.582-7.082zm5.453 4.2891h4.0548c1.7114 0 2.668 0.75016 2.668 2.3555v1.6133c0 1.6053-0.9566 2.3594-2.668 2.3594h-4.0548z"/>
+    </g>
+  </symbol>
+</svg>
+
+<div class="topnav">
+  <div class="inner">
+    <svg class="ibm-mark" role="img" aria-label="IBM"><use href="#ibm-8bar"></use></svg>
+    <div class="sep"></div>
+    <div class="product">Bob <span>· Bobathon</span></div>
+    <button class="theme-toggle" id="themeToggle" type="button">테마 전환</button>
+  </div>
+</div>
+
+<div class="band hero">
+  <div class="inner">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">IBM Bob 고객 초청 해커톤</div>
+        <h1>Bobathon</h1>
+        <p class="lead">개발 실무자를 위한 <strong>두 시간짜리 핸즈온 세션</strong>입니다. Bob을 직접 다뤄 보고, 그날 만든 것을 <strong>그대로 자기 레포로</strong> 가져갑니다.</p>
+        <div class="cta-row">
+          <!-- TODO: 등록 링크를 확정되면 href 에 넣으세요 -->
+          <a class="btn" href="#" id="registerTop">등록하기 <span class="arrow" aria-hidden="true">→</span></a>
+          <span class="btn-note">등록 링크는 추후 안내</span>
+        </div>
+      </div>
+      <figure class="bob-plate">
+        <img src="assets/ibmbob.png" alt="IBM Bob 마스코트 — 파란 안전모를 쓰고 코드 기호가 적힌 표지판을 든 로봇" width="538" height="634">
+        <figcaption>오늘 여러분이 다뤄 볼 IBM Bob</figcaption>
+      </figure>
+    </div>
+    <div class="hero-facts">
+      <div class="fact">
+        <div class="k">날짜</div>
+        <!-- TODO: 날짜 확정 -->
+        <div class="v">○월 ○일</div>
+      </div>
+      <div class="fact">
+        <div class="k">시간</div>
+        <div class="v num">14:30 – 16:30</div>
+      </div>
+      <div class="fact">
+        <div class="k">장소</div>
+        <!-- TODO: 장소 확정 -->
+        <div class="v">추후 안내</div>
+      </div>
+      <div class="fact">
+        <div class="k">대상</div>
+        <div class="v">개발 실무자</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="band alt">
+  <div class="inner stack">
+    <div>
+      <div class="eyebrow">아젠다</div>
+      <h2>두 시간, 이렇게 진행됩니다</h2>
+    </div>
+    <div class="scroller">
+      <table class="agenda">
+        <thead>
+          <tr>
+            <th>시각</th>
+            <th>분</th>
+            <th>단계</th>
+            <th>내용</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="clock">14:30</td>
+            <td class="dur">5</td>
+            <td class="phase">오프닝</td>
+            <td class="note">오늘의 목표와 진행 방식 안내</td>
+          </tr>
+          <tr>
+            <td class="clock">14:35</td>
+            <td class="dur">20</td>
+            <td class="phase">LAB 1<small>Build</small></td>
+            <td class="note">팀 규칙을 반영해 기능 하나를 직접 만듭니다</td>
+          </tr>
+          <tr>
+            <td class="clock">14:55</td>
+            <td class="dur">20</td>
+            <td class="phase">LAB 2<small>Extend</small></td>
+            <td class="note">Bob의 도구를 붙이고 직접 확장합니다</td>
+          </tr>
+          <tr>
+            <td class="clock">15:15</td>
+            <td class="dur">20</td>
+            <td class="phase">LAB 3<small>Modernize</small></td>
+            <td class="note">레거시 코드에 안전망을 씌웁니다</td>
+          </tr>
+          <tr class="rest">
+            <td class="clock">15:35</td>
+            <td class="dur">5</td>
+            <td class="phase">브레이크</td>
+            <td class="note">잠깐 쉬어 갑니다</td>
+          </tr>
+          <tr>
+            <td class="clock">15:40</td>
+            <td class="dur">10</td>
+            <td class="phase">스코프 게이트</td>
+            <td class="note">내 반복 업무 하나를 골라 범위를 잡습니다</td>
+          </tr>
+          <tr>
+            <td class="clock">15:50</td>
+            <td class="dur">30</td>
+            <td class="phase">빌드 스프린트</td>
+            <td class="note">고른 업무를 직접 만들어 봅니다</td>
+          </tr>
+          <tr>
+            <td class="clock">16:20</td>
+            <td class="dur">10</td>
+            <td class="phase">플레이백</td>
+            <td class="note">만든 것을 함께 나눕니다</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="band cta-banner">
+  <div class="inner">
+    <h2>자리를 맡아 두세요</h2>
+    <!-- TODO: 등록 링크를 확정되면 href 에 넣으세요 -->
+    <a class="btn" href="#" id="registerBottom">등록하기 <span class="arrow" aria-hidden="true">→</span></a>
+  </div>
+</div>
+
+<footer>
+  <div class="inner">
+    <svg class="ibm-mark" role="img" aria-label="IBM"><use href="#ibm-8bar"></use></svg>
+    <div class="mark">Bobathon</div>
+    <div class="meta">IBM Bob 고객 초청 해커톤 · 14:30 – 16:30</div>
+    <div class="meta" style="color:#8d8d8d">개발 실무자 핸즈온 세션</div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    var saved = null;
+    try { saved = localStorage.getItem('bobathon-theme'); } catch (e) {}
+    if (saved === 'dark' || saved === 'light') root.setAttribute('data-theme', saved);
+
+    btn.addEventListener('click', function () {
+      var current = root.getAttribute('data-theme');
+      if (!current) {
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        current = prefersDark ? 'dark' : 'light';
+      }
+      var next = current === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('bobathon-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+
+</body>
+</html>
