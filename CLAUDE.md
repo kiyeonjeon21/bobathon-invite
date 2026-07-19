@@ -36,14 +36,13 @@ python3 -m http.server 8000   # → http://localhost:8000
 
 세부 토큰과 do/don't는 `DESIGN.md` 참조.
 
-## Placeholders (확정 후 채울 것)
+## 행사 정보 (전부 확정 · 반영 완료)
 
-`index.html`에 `<!-- TODO -->` 주석으로 표시되어 있다:
+- 상위 행사: **AI Summit Korea** / 날짜: **9월 1일** / 시간: **14:00 – 16:00**
+- 장소: **웨스틴 서울 파르나스 LL층 앰버룸(Amber)**
+- 등록 링크: `https://forms.cloud.microsoft/r/kUjgHAJUQz` — **2곳**(`#registerTop`, `#registerBottom`)에 들어간다. 바꿀 때 한쪽만 고치지 않도록 주의.
 
-- 등록 버튼 `href` — **2곳** (`#registerTop`, `#registerBottom`). 현재 `#`.
-- 장소 fact — 현재 `추후 안내`.
-
-날짜(**9월 1일**), 시간(14:30–16:30), 상위 행사(**AI Summit Korea**)는 반영 완료.
+시간을 바꾸면 아젠다 표의 `clock` 값(현재 14:00 오프닝 ~ 15:50 플레이백)과 푸터 `.meta` 줄도 함께 맞춰야 한다. 남은 `<!-- TODO -->` placeholder는 없다.
 
 ## Conventions
 

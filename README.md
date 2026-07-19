@@ -7,16 +7,17 @@ IBM Bob 고객 초청 해커톤 **Bobathon**의 **고객 배포용 소개(랜딩
 
 ---
 
-## 확정 후 채워 넣을 것 (placeholder)
+## 행사 정보 (전부 확정 · 반영 완료)
 
-`index.html`에 `<!-- TODO -->` 주석으로 표시해 두었습니다.
+| 항목 | 값 |
+|---|---|
+| 상위 행사 | AI Summit Korea |
+| 날짜 | 9월 1일 |
+| 시간 | 14:00 – 16:00 |
+| 장소 | 웨스틴 서울 파르나스 LL층 앰버룸(Amber) |
+| 등록 링크 | <https://forms.cloud.microsoft/r/kUjgHAJUQz> (`#registerTop`, `#registerBottom` 2곳) |
 
-| 위치 | 현재 값 | 채울 것 |
-|---|---|---|
-| 등록 버튼 `href` (2곳) | `#` | 실제 등록 폼/링크 |
-| 장소 fact | `추후 안내` | 확정 장소 |
-
-날짜는 **9월 1일**, 상위 행사는 **AI Summit Korea**로 반영되어 있습니다.
+남은 placeholder 없음.
 
 ---
 
